@@ -1,47 +1,47 @@
-import fs from "fs";
-import path from "path";
-import logger from "@utils/logger";
+import fs from 'fs';
+import path from 'path';
+import logger from '@utils/logger';
 
-import { Client, Collection } from "discord.js";
+import { Client, Collection } from 'discord.js';
 
 export interface Event {
     name: string;
     once: boolean;
     execute(...args: any[]): Promise<void>;
-};
+}
 
-declare module "discord.js" {
+declare module 'discord.js' {
     interface Client {
         events: Collection<string, Event>;
     }
-};
+}
 
 export const registerEvents = async (client: Client) => {
-    logger.info("Registering events...")
+	logger.info('Registering events...');
 
-    client.events = new Collection();
+	client.events = new Collection();
 
-    const eventPath = path.join(__dirname, "../events");
-    const eventFiles = fs.readdirSync(eventPath).filter(file => file.endsWith(".event.js"));
+	const eventPath = path.join(__dirname, '../events');
+	const eventFiles = fs.readdirSync(eventPath).filter(file => file.endsWith('.event.js'));
 
-    for (const file of eventFiles) {
-        const filePath = path.join(eventPath, file);
-        const { default: event } = await import(filePath) as { default: Event };
+	for (const file of eventFiles) {
+		const filePath = path.join(eventPath, file);
+		const { default: event } = await import(filePath) as { default: Event };
 
-        if (!event?.name || !event?.execute) {
-            logger.warn(`Event file \"${file}\" is missing name, execute! Skipping...`);
-            continue;
-        }
+		if (!event?.name || !event?.execute) {
+			logger.warn(`Event file "${file}" is missing name, execute! Skipping...`);
+			continue;
+		}
 
-        client.events.set(event.name, event);
+		client.events.set(event.name, event);
 
-        if (event.once) {
-            client.once(event.name, (...args) => event.execute(...args));
-            continue;
-        }
+		if (event.once) {
+			client.once(event.name, (...args) => event.execute(...args));
+			continue;
+		}
 
-        client.on(event.name, (...args) => event.execute(...args));
-    };
+		client.on(event.name, (...args) => event.execute(...args));
+	}
 
-    logger.info(`Registered ${client.events.size} events!`);
+	logger.info(`Registered ${client.events.size} events!`);
 };

@@ -11,22 +11,22 @@ const token = config.token;
 const production = config.production;
 
 const client = new Client({
-    intents: [ GatewayIntentBits.Guilds, GatewayIntentBits.GuildPresences ]
+	intents: [ GatewayIntentBits.Guilds, GatewayIntentBits.GuildPresences ]
 });
 
 const rest = new REST({version: '10'}).setToken(token);
 
 const main = async () => {
-    if (!production) logger.warn("Running in development mode!");
+	if (!production) logger.warn('Running in development mode!');
 
-    // commands
-    await registerCommands(client);
-    await deployCommands(client, rest);
+	// commands
+	await registerCommands(client);
+	await deployCommands(client, rest);
 
-    // events
-    await registerEvents(client);
+	// events
+	await registerEvents(client);
 
-    client.login(token);
-}
+	client.login(token);
+};
 
 main().catch(error => logger.error(`Unexpected error occured: ${error}`));

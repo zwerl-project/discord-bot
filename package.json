@@ -1,0 +1,34 @@
+{
+  "name": "zwerl-discord",
+  "version": "1.0.0",
+  "description": "Discord bot connected to the Zwerl Network.",
+  "main": "src/main.ts",
+  "author": "DownloadableFox <58178791+DownloadableFox@users.noreply.github.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "tsc",
+    "start": "node dist/main.js | pino-pretty",
+    "deploy": "yarn clean && yarn build && yarn start",
+    "dev": "nodemon src/main.ts"
+  },
+  "_moduleAliases": {
+    "@utils": "./dist/utils/",
+    "@events": "./dist/events/",
+    "@commands": "./dist/commands/"
+  },
+  "dependencies": {
+    "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3",
+    "module-alias": "^2.2.2",
+    "pino": "^8.7.0",
+    "pino-pretty": "^9.1.1",
+    "typescript": "^4.9.4"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.12",
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1"
+  }
+}

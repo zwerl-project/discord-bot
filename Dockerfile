@@ -9,7 +9,7 @@ RUN yarn install
 
 # Bundle app source
 COPY . .
-RUN yawrn build
+RUN yarn build
 
 # Start app
 CMD [ "yarn", "start" ]

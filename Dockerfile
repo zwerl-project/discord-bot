@@ -22,7 +22,7 @@ RUN yarn install
 
 # Bundle app source
 COPY . .
-RUN yawn build
+RUN yarn build
 
 # Start app
 CMD [ "yarn", "start" ]

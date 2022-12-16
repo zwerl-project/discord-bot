@@ -12,6 +12,8 @@
     "start": "node dist/main.js | pino-pretty",
     "lint": "eslint src --ext .ts",
     "lint:fix": "eslint src --ext .ts --fix",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
     "deploy": "yarn clean && yarn build && yarn start",
     "dev": "nodemon src/main.ts"
   },
@@ -21,6 +23,7 @@
     "@commands": "./dist/commands/"
   },
   "dependencies": {
+    "@prisma/client": "4.7.1",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "module-alias": "^2.2.2",
@@ -34,6 +37,7 @@
     "@typescript-eslint/parser": "^5.46.0",
     "eslint": "^8.29.0",
     "nodemon": "^2.0.20",
+    "prisma": "^4.7.1",
     "ts-node": "^10.9.1"
   }
 }

@@ -29,7 +29,7 @@ export const registerEvents = async (client: Client) => {
 		const { default: event } = await import(filePath) as { default: Event };
 
 		if (!event?.name || !event?.execute) {
-			logger.warn(`Event file "${file}" is missing name, execute! Skipping...`);
+			logger.warn(`Event file "${file}" is missing name or execute! Skipping...`);
 			continue;
 		}
 

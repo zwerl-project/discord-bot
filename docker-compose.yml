@@ -10,5 +10,6 @@ services:
       - CLIENT_ID=${CLIENT_ID}
       - GUILD_ID=${GUILD_ID}
       - DEFAULT_ROLE=${DEFAULT_ROLE}
+      - LOGS_CHANNEL=${LOGS_CHANNEL}
     expose:
       - ${PORT}:${PORT}

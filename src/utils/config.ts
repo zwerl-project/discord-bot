@@ -8,6 +8,7 @@ interface Config {
     token: string;
     clientId: string;
     guildId: string;
+	defaultRole: string;
 }
 
 export const get = (key: string, defaultValue?: any) => {
@@ -33,6 +34,7 @@ const config: Config = {
 	token: get('TOKEN'),
 	clientId: get('CLIENT_ID'),
 	guildId: get('GUILD_ID'),
+	defaultRole: get('DEFAULT_ROLE')
 };
 
 export default config;

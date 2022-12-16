@@ -1,6 +1,6 @@
+import { Client, Events } from 'discord.js';
 import { Event } from '@utils/events';
 import logger from '@utils/logger';
-import { Client, Events } from 'discord.js';
 
 const ClientReadyEvent: Event = {
 	name: Events.ClientReady,

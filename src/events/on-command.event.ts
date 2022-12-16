@@ -1,8 +1,8 @@
+import { CommandInteraction, Events } from 'discord.js';
 import { Event } from '@utils/events';
 import logger from '@utils/logger';
-import { CommandInteraction, Events } from 'discord.js';
 
-const onCommand: Event = {
+const onCommandEvent: Event = {
 	name: Events.InteractionCreate,
 	once: false,
 	async execute(interaction: CommandInteraction) {
@@ -26,4 +26,4 @@ const onCommand: Event = {
 	}
 };
 
-export default onCommand;
+export default onCommandEvent;

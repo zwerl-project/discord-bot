@@ -11,7 +11,11 @@ const token = config.token;
 const production = config.production;
 
 const client = new Client({
-	intents: [ GatewayIntentBits.Guilds, GatewayIntentBits.GuildPresences ]
+	intents: [
+		GatewayIntentBits.Guilds, 
+		GatewayIntentBits.GuildPresences,
+		GatewayIntentBits.GuildMembers
+	],
 });
 
 const rest = new REST({version: '10'}).setToken(token);

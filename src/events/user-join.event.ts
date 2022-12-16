@@ -32,3 +32,5 @@ const userJoinEvent: Event = {
         await member.roles.add(defaultRole);
     }
 };
+
+export default userJoinEvent;

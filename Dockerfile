@@ -1,4 +1,4 @@
-FROM node:lts-alpine
+FROM node:18-bullseye-slim
 
 # Defining environment variables
 ENV NODE_ENV=production

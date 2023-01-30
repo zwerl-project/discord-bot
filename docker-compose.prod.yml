@@ -19,6 +19,5 @@ services:
     networks:
       - zwerl
 networks:
-  public:
-    external:
-      name: zwerl-net
+  zwerl-net:
+    external: true

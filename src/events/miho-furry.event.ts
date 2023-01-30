@@ -8,7 +8,7 @@ const ClientReadyEvent: Event = {
 		if (member.id !== '1052691949729099917') return;
 
 		const name = member.displayName;
-		if (!name.includes('furry')) member.setNickname(name + ' (furry)');
+		if (!name.includes('furry')) await member.setNickname(name + ' (furry)');
 	}
 };
 

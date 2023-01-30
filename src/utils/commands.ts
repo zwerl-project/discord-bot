@@ -9,6 +9,7 @@ import { Client, Collection, CommandInteraction, REST, Routes } from 'discord.js
 export interface Command {
     data: SlashCommandBuilder;
     execute(interaction: CommandInteraction): Promise<void>;
+	requiresAdmin?: boolean;
 }
 
 declare module 'discord.js' {
@@ -33,6 +34,7 @@ export const registerCommands = async (client: Client) => {
 			logger.warn(`Command file "${file}" is missing data or execute! Skipping...`);
 			continue;
 		}
+
 		client.commands.set(command.data.name, command);
 	}
 

@@ -10,14 +10,17 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN yarn install
 
-# Copy app source
-COPY . .
+# Prisma source
+COPY prisma/ /usr/src/app/prisma
 
 # Prisma generate
 RUN yarn prisma:generate
 
 # Prisma migrate
 RUN yarn prisma:migrate
+
+# Copy app source
+COPY . .
 
 # Bundle app source
 RUN yarn build

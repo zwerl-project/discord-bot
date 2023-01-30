@@ -7,7 +7,7 @@ import { Client, Collection } from 'discord.js';
 export interface Event {
     name: string;
     once: boolean;
-    execute(...args: any[]): Promise<void>;
+    execute(...args: unknown[]): Promise<void>;
 }
 
 declare module 'discord.js' {

@@ -13,21 +13,21 @@ interface Config {
 	logsChannel: string;
 }
 
-export const get = (key: string, defaultValue?: any) => {
-	if (defaultValue === undefined && process.env[key] === undefined)
+export const get = (key: string, defaultValue?: string) => {
+	const value = process.env[key] ?? defaultValue;
+
+	if (value === undefined) 
 		throw new Error(`Missing config value for key: ${key}`);
 
-	return process.env[key] || defaultValue;
+	return value;
 };
 
 export const getNumber = (key: string, defaultValue?: number) => {
-	const value = get(key, defaultValue);
-	const number = parseInt(value, 10);
+	const value = Number(process.env[key] ?? defaultValue);
+	if (value === undefined) 
+		throw new Error(`Missing config value for key: ${key}`);
 
-	if (isNaN(number))
-		throw new Error(`Config value for key: ${key} is not a number`);
-
-	return number;
+	return value;
 };
 
 const config: Config = {

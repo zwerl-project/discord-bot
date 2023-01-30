@@ -7,7 +7,7 @@ const MihoFurryEvent: Event = {
 	async execute(oldMember: GuildMember, newMember: GuildMember) {
 		if (newMember.id !== '1052691949729099917') return;
 
-		const name = newMember.displayName;
+		const name = oldMember.displayName;
 		if (!name.toLowerCase().includes('furry')) 
 			await newMember.setNickname(name + ' (furry)');
 	}

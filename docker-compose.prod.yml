@@ -17,7 +17,7 @@ services:
       - DEFAULT_ROLE=${DEFAULT_ROLE}
       - LOGS_CHANNEL=${LOGS_CHANNEL}
     networks:
-      - zwerl
+      - zwerl-net
 networks:
   zwerl-net:
     external: true

@@ -14,7 +14,7 @@
     "lint:fix": "eslint src --ext .ts --fix",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "deploy": "yarn clean && yarn build && yarn start",
+    "deploy": "yarn prisma:migrate && yarn clean && yarn build && yarn start",
     "dev": "nodemon src/main.ts | pino-pretty"
   },
   "_moduleAliases": {

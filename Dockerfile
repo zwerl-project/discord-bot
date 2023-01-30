@@ -16,9 +16,6 @@ COPY prisma ./prisma
 # Prisma generate
 RUN yarn prisma:generate
 
-# Prisma migrate
-RUN yarn prisma:migrate
-
 # Copy app source
 COPY . .
 

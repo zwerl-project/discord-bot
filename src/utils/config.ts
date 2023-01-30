@@ -8,6 +8,7 @@ interface Config {
     token: string;
     clientId: string;
     guildId: string;
+	moderatorRole: string;
 	defaultRole: string;
 	logsChannel: string;
 }
@@ -35,6 +36,7 @@ const config: Config = {
 	token: get('TOKEN'),
 	clientId: get('CLIENT_ID'),
 	guildId: get('GUILD_ID'),
+	moderatorRole: get('MODERATOR_ROLE'),
 	defaultRole: get('DEFAULT_ROLE'),
 	logsChannel: get('LOGS_CHANNEL'),
 };

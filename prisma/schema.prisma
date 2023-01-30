@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -21,4 +21,14 @@ model GuildMessage {
   updatedAt DateTime @updatedAt
 
   @@map("guild_messages")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  whitelisted Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("users")
 }

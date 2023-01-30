@@ -1,7 +1,7 @@
 import { Command } from '@utils/commands';
 import { APIEmbedField, CommandInteraction, EmbedBuilder, SlashCommandBuilder, SlashCommandUserOption } from 'discord.js';
 
-const userOptions = new SlashCommandUserOption()
+const userOption = new SlashCommandUserOption()
 	.setName('user')
 	.setDescription('The target user to get the activities from.')
 	.setRequired(true);
@@ -9,7 +9,7 @@ const userOptions = new SlashCommandUserOption()
 const getActivityCommand: Command = {
 	data: new SlashCommandBuilder()
 		.setName('get-activity')
-		.addUserOption(userOptions)
+		.addUserOption(userOption)
 		.setDescription('Returns the current activity of the user.')
 		.setDMPermission(false),
 

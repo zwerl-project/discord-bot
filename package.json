@@ -1,5 +1,5 @@
 {
-  "name": "zwerl-discord",
+  "name": "@zwerl/discord-bot",
   "version": "1.0.0",
   "description": "Discord bot connected to the Zwerl Network.",
   "main": "src/main.ts",
@@ -15,18 +15,20 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "deploy": "yarn clean && yarn build && yarn start",
-    "dev": "nodemon src/main.ts"
+    "dev": "nodemon src/main.ts | pino-pretty"
   },
   "_moduleAliases": {
     "@utils": "./dist/utils/",
     "@events": "./dist/events/",
-    "@commands": "./dist/commands/"
+    "@commands": "./dist/commands/",
+    "@services": "./dist/services/"
   },
   "dependencies": {
     "@prisma/client": "4.7.1",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "module-alias": "^2.2.2",
+    "nodemon": "^2.0.20",
     "pino": "^8.7.0",
     "pino-pretty": "^9.1.1",
     "typescript": "^4.9.4"
@@ -36,8 +38,11 @@
     "@typescript-eslint/eslint-plugin": "^5.46.0",
     "@typescript-eslint/parser": "^5.46.0",
     "eslint": "^8.29.0",
-    "nodemon": "^2.0.20",
     "prisma": "^4.7.1",
     "ts-node": "^10.9.1"
+  },
+  "volta": {
+    "node": "18.13.0",
+    "yarn": "4.0.0-rc.37"
   }
 }

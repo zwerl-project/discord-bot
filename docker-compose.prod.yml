@@ -1,0 +1,18 @@
+version: '3.7'
+services:
+  discord:
+    build: .
+    container_name: zwerl-discord
+    restart: always
+    ports:
+      - ${PORT}:${PORT}
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=${DATABASE_URL}
+      - PORT=${PORT}
+      - TOKEN=${TOKEN}
+      - CLIENT_ID=${CLIENT_ID}
+      - GUILD_ID=${GUILD_ID}
+      - MODERATOR_ROLE=${MODERATOR_ROLE}
+      - DEFAULT_ROLE=${DEFAULT_ROLE}
+      - LOGS_CHANNEL=${LOGS_CHANNEL}

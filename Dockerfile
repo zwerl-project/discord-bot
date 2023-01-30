@@ -11,7 +11,7 @@ COPY package*.json ./
 RUN yarn install
 
 # Prisma source
-COPY prisma/ /usr/src/app/prisma
+COPY prisma ./prisma
 
 # Prisma generate
 RUN yarn prisma:generate

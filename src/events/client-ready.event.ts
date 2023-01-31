@@ -1,6 +1,7 @@
 import { Client, Events } from 'discord.js';
 import { Event } from '@utils/events';
 import logger from '@utils/logger';
+import cron from 'node-cron';
 
 const ClientReadyEvent: Event = {
 	name: Events.ClientReady,
@@ -12,7 +13,7 @@ const ClientReadyEvent: Event = {
 		logger.info(`Guilds (${guilds.length}): ${guilds.map(guild => guild.name).join(', ')}`);
 
 		for (const task of client.tasks.values()) {
-			setInterval(() => task.execute(client), task.interval);
+			cron.schedule(task.schedule, () => task.execute(client));
 		}
 	}
 };

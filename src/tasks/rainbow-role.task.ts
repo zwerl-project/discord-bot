@@ -13,7 +13,7 @@ const getColor = (time: number): [red: number, green: number, blue: number] => {
 };
 
 const RainbowRoleTask: Task = {
-	interval: 100,
+	schedule: '*/0.1 * * * * *',
 	execute: async (client: Client) => {
 		timer = (timer + 0.02) % 1;
 

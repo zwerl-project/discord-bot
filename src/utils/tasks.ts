@@ -1,10 +1,11 @@
 import fs from 'fs';
 import path from 'path';
 import logger from '@utils/logger';
+import cron from 'node-cron';
 import { Client } from 'discord.js';
 
 export interface Task {
-	interval: number;
+	schedule: string;
 	execute: (client: Client) => Promise<void>;
 }
 
@@ -24,8 +25,13 @@ export const registerTasks = async (client: Client) => {
 		const filePath = path.join(taskPath, file);
 		const { default: task } = await import(filePath) as { default: Task };
 
-		if (!task?.interval || !task?.execute) {
+		if (!task?.schedule || !task?.execute) {
 			logger.warn(`Task file "${file}" is missing schedule or execute! Skipping...`);
+			continue;
+		}
+
+		if (!cron.validate(task.schedule)) {
+			logger.warn(`Task file "${file}" has an invalid schedule! Skipping...`);
 			continue;
 		}
 

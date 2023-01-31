@@ -22,13 +22,15 @@
     "@events": "./dist/events/",
     "@commands": "./dist/commands/",
     "@services": "./dist/services/",
-    "@middlewares": "./dist/middlewares/"
+    "@middlewares": "./dist/middlewares/",
+    "@tasks": "./dist/tasks/"
   },
   "dependencies": {
     "@prisma/client": "4.7.1",
     "discord.js": "^14.7.1",
     "dotenv": "^16.0.3",
     "module-alias": "^2.2.2",
+    "node-cron": "^3.0.2",
     "nodemon": "^2.0.20",
     "pino": "^8.7.0",
     "pino-pretty": "^9.1.1",
@@ -36,6 +38,7 @@
   },
   "devDependencies": {
     "@types/node": "^18.11.12",
+    "@types/node-cron": "^3",
     "@typescript-eslint/eslint-plugin": "^5.46.0",
     "@typescript-eslint/parser": "^5.46.0",
     "eslint": "^8.29.0",

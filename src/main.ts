@@ -4,6 +4,7 @@ require('module-alias/register');
 import { Client, GatewayIntentBits, REST } from 'discord.js';
 import { deployCommands, registerCommands } from '@utils/commands';
 import { registerEvents } from '@utils/events';
+import { registerTasks } from '@utils/tasks';
 import config from '@utils/config';
 import logger from '@utils/logger';
 
@@ -31,6 +32,9 @@ const main = async () => {
 
 	// events
 	await registerEvents(client);
+
+	// tasks
+	await registerTasks(client);
 
 	client.login(token);
 };

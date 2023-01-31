@@ -1,6 +1,6 @@
+import { requiresModerator } from '@middlewares/requires-moderator';
 import { Command } from '@utils/commands';
-import config from '@utils/config';
-import { ChatInputCommandInteraction, GuildMember, SlashCommandBuilder, SlashCommandStringOption, TextBasedChannel } from 'discord.js';
+import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption, TextBasedChannel } from 'discord.js';
 
 const messageOption = new SlashCommandStringOption()
 	.setName('message')
@@ -13,17 +13,15 @@ const sayCommand: Command = {
 		.addStringOption(messageOption)
 		.setDescription('Sends a message as the bot.'),
 
+
+	middlewares: [requiresModerator],
+	
 	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply({ ephemeral: true });
 
-		const member = interaction.member as GuildMember;
-		if (!member.roles.cache.has(config.moderatorRole)) {
-			interaction.editReply('You do not have enough permissions to use this command!');
-			return;
-		}
-
 		const channel = interaction.channel as TextBasedChannel;
 		const message = interaction.options.getString('message', true);
+
 		await channel.send(message);
 		await interaction.editReply({ content: 'Message sent!'});
 	}

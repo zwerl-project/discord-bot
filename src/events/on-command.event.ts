@@ -18,7 +18,18 @@ const onCommandEvent: Event = {
 		}
 
 		try {
-			await command.execute(interaction);
+			if (!command.middlewares) return await command.execute(interaction);
+			const middlewares = [...command.middlewares, command];
+
+			let i = 0;
+
+			const next = async (interaction: CommandInteraction) => {
+				i++;
+				if (i >= middlewares.length) return;
+				await middlewares[i].execute(interaction, next as (interaction: unknown) => Promise<void>);
+			};
+
+			await middlewares[0].execute(interaction, next as (interaction: unknown) => Promise<void>);
 		} catch (error) {
 			console.error(error);
 			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });

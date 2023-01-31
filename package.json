@@ -21,7 +21,8 @@
     "@utils": "./dist/utils/",
     "@events": "./dist/events/",
     "@commands": "./dist/commands/",
-    "@services": "./dist/services/"
+    "@services": "./dist/services/",
+    "@middlewares": "./dist/middlewares/"
   },
   "dependencies": {
     "@prisma/client": "4.7.1",

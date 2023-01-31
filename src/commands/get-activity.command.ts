@@ -1,3 +1,4 @@
+import { requiresModerator } from '@middlewares/requires-moderator';
 import { Command } from '@utils/commands';
 import { APIEmbedField, CommandInteraction, EmbedBuilder, SlashCommandBuilder, SlashCommandUserOption } from 'discord.js';
 
@@ -12,6 +13,8 @@ const getActivityCommand: Command = {
 		.addUserOption(userOption)
 		.setDescription('Returns the current activity of the user.')
 		.setDMPermission(false),
+
+	middlewares: [requiresModerator],
 
 	async execute(interaction: CommandInteraction) {
 		await interaction.deferReply({ ephemeral: true });

@@ -2,14 +2,15 @@ import fs from 'fs';
 import path from 'path';
 import config from '@utils/config'; 
 import logger from '@utils/logger';
+import { Middleware } from '@utils/middleware';
 
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { Client, Collection, CommandInteraction, REST, Routes } from 'discord.js';
 
-export interface Command {
+export interface Command extends Middleware {
     data: SlashCommandBuilder;
+	middlewares?: Middleware[];
     execute(interaction: CommandInteraction): Promise<void>;
-	requiresAdmin?: boolean;
 }
 
 declare module 'discord.js' {

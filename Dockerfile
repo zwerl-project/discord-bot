@@ -7,8 +7,15 @@ ENV NODE_ENV=production
 WORKDIR /usr/src/app
 
 # Install app dependencies
-COPY package*.json yarn.lock ./
+COPY package.json .
+COPY yarn.lock .
 RUN yarn install
+
+# Debugging
+RUN pwd
+RUN ls -la
+RUN ls -la /usr/src/app
+RUN ls -la /usr/src/app/node_modules
 
 # Prisma source
 COPY prisma ./prisma

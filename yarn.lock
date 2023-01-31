@@ -279,7 +279,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node-cron@npm:^3":
+"@types/node-cron@npm:^3.0.7":
   version: 3.0.7
   resolution: "@types/node-cron@npm:3.0.7"
   checksum: d533fc933d0a87c9f20ad1752486a35ab07461d58257fb714fc2241d765c809e48db455cb5481d7a088092a10ed4afd3d84aa4bbc32fcfef25bf910d7bfaab76
@@ -435,7 +435,7 @@ __metadata:
   dependencies:
     "@prisma/client": "npm:4.7.1"
     "@types/node": "npm:^18.11.12"
-    "@types/node-cron": "npm:^3"
+    "@types/node-cron": "npm:^3.0.7"
     "@typescript-eslint/eslint-plugin": "npm:^5.46.0"
     "@typescript-eslint/parser": "npm:^5.46.0"
     discord.js: "npm:^14.7.1"

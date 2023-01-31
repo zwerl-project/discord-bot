@@ -1,6 +1,5 @@
 import fs from 'fs';
 import path from 'path';
-import cron from 'node-cron';
 import logger from '@utils/logger';
 import { Client } from 'discord.js';
 

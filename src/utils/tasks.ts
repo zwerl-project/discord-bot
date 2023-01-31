@@ -15,6 +15,14 @@ declare module 'discord.js' {
 	}
 }
 
+export const tasksErrorHandler = (execute: (client: Client) => Promise<void>) => (client: Client) => {
+	try {
+		return execute(client);
+	} catch (error) {
+		logger.error(error);
+	}
+};
+
 export const registerTasks = async (client: Client) => {
 	client.tasks = [];
 

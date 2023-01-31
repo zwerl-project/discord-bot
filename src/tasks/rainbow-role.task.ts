@@ -21,7 +21,7 @@ const RainbowRoleTask: Task = {
 		const role = guild?.roles.cache.get(config.moderatorRole);
 
 		if (!role) return;
-		role.setColor(getColor(timer, 'rainbow role'));
+		role.setColor(getColor(timer), 'rainbow role');
 	}
 };
 

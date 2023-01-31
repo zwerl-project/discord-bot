@@ -16,6 +16,14 @@ declare module 'discord.js' {
     }
 }
 
+const eventErrorHandler = (execute: (...args: unknown[]) => Promise<void>) => (...args: unknown[]) => {
+	try {
+		return execute(...args);
+	} catch (error) {
+		logger.error(error);
+	}
+};
+
 export const registerEvents = async (client: Client) => {
 	logger.info('Registering events...');
 
@@ -36,11 +44,11 @@ export const registerEvents = async (client: Client) => {
 		client.events.set(event.name, event);
 
 		if (event.once) {
-			client.once(event.name, (...args) => event.execute(...args));
+			client.once(event.name, eventErrorHandler(event.execute));
 			continue;
 		}
 
-		client.on(event.name, (...args) => event.execute(...args));
+		client.on(event.name, eventErrorHandler(event.execute));
 	}
 
 	logger.info(`Registered ${client.events.size} events!`);

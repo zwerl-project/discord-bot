@@ -2,7 +2,7 @@ import config from '@utils/config';
 import { Middleware } from '@utils/middleware';
 import { CommandInteraction, GuildMemberRoleManager } from 'discord.js';
 
-export const requiresModerator: Middleware = {
+const requiresModerator: Middleware = {
 	async execute(interaction: CommandInteraction, next: (params: unknown) => Promise<void>) {
 		const member = interaction.member;
 		if (!member) return;
@@ -16,3 +16,5 @@ export const requiresModerator: Middleware = {
 		await next(interaction);
 	}
 };
+
+export default requiresModerator;

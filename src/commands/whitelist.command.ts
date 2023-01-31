@@ -1,5 +1,5 @@
 import { isWhitelisted, whitelistUser } from '@services/users';
-import { requiresModerator } from '@middlewares/requires-moderator';
+import { requiresModerator, errorWrapper } from '@middlewares/index';
 import { Command } from '@utils/commands';
 import logger from '@utils/logger';
 
@@ -23,7 +23,7 @@ const whitelistedCommand: Command = {
 		.addBooleanOption(removeOption)
 		.setDMPermission(false),
 
-	middlewares: [requiresModerator],
+	middlewares: [errorWrapper, requiresModerator],
 
 	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply({ ephemeral: true });

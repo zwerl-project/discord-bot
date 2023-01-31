@@ -1,6 +1,6 @@
-import { requiresModerator } from '@middlewares/requires-moderator';
-import { Command } from '@utils/commands';
 import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption, TextBasedChannel } from 'discord.js';
+import { errorWrapper, requiresModerator } from '@middlewares/index';
+import { Command } from '@utils/commands';
 
 const messageOption = new SlashCommandStringOption()
 	.setName('message')
@@ -14,7 +14,7 @@ const sayCommand: Command = {
 		.setDescription('Sends a message as the bot.'),
 
 
-	middlewares: [requiresModerator],
+	middlewares: [errorWrapper, requiresModerator],
 	
 	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply({ ephemeral: true });

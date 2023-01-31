@@ -32,7 +32,6 @@ const onCommandEvent: Event = {
 			await middlewares[0].execute(interaction, next as (interaction: unknown) => Promise<void>);
 		} catch (error) {
 			console.error(error);
-			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
 		}
 	}
 };

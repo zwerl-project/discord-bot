@@ -1,5 +1,6 @@
-import { Command } from '@utils/commands';
 import { CommandInteraction, EmbedBuilder, SlashCommandBuilder, SlashCommandStringOption, SlashCommandUserOption } from 'discord.js';
+import { errorWrapper } from '@middlewares/index';
+import { Command } from '@utils/commands';
 
 const userOptions = new SlashCommandUserOption()
 	.setName('user')
@@ -20,15 +21,15 @@ const pingCommand: Command = {
 		.addStringOption(reasonOptions)
 		.setDMPermission(false),
 
+	middlewares: [errorWrapper],
+
 	async execute(interaction: CommandInteraction) {
 		await interaction.deferReply({ ephemeral: false });
 
 		const user = interaction.options.getUser('user');
 
-		if (!user) {
-			await interaction.reply('An error has occured! Couldn\'t find the target user.');
-			return;
-		}
+		if (!user)
+			throw new Error('Couldn\'t find the target user.');
 
 		const beanEmbed = new EmbedBuilder()
 			.setTitle('User Beaned')

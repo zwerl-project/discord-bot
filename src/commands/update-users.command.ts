@@ -1,8 +1,8 @@
-import { requiresModerator } from '@middlewares/requires-moderator';
+import { ChatInputCommandInteraction, Guild, SlashCommandBuilder } from 'discord.js';
+import { errorWrapper, requiresModerator } from '@middlewares/index';
 import { isWhitelisted, whitelistUser } from '@services/users';
 import { Command } from '@utils/commands';
 import logger from '@utils/logger';
-import { ChatInputCommandInteraction, Guild, SlashCommandBuilder } from 'discord.js';
 
 const whitelistedCommand: Command = {
 	data: new SlashCommandBuilder()
@@ -11,7 +11,7 @@ const whitelistedCommand: Command = {
 		.setDMPermission(false),
 
 
-	middlewares: [requiresModerator],
+	middlewares: [errorWrapper, requiresModerator],
 
 	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply({ ephemeral: true });

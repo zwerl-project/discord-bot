@@ -4,7 +4,7 @@ import logger from '@utils/logger';
 import { Client } from 'discord.js';
 
 export interface Task {
-	schedule: string;
+	interval: number;
 	execute: (client: Client) => Promise<void>;
 }
 
@@ -24,7 +24,7 @@ export const registerTasks = async (client: Client) => {
 		const filePath = path.join(taskPath, file);
 		const { default: task } = await import(filePath) as { default: Task };
 
-		if (!task?.schedule || !task?.execute) {
+		if (!task?.interval || !task?.execute) {
 			logger.warn(`Task file "${file}" is missing schedule or execute! Skipping...`);
 			continue;
 		}

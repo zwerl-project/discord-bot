@@ -279,13 +279,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node-cron@npm:^3.0.7":
-  version: 3.0.7
-  resolution: "@types/node-cron@npm:3.0.7"
-  checksum: d533fc933d0a87c9f20ad1752486a35ab07461d58257fb714fc2241d765c809e48db455cb5481d7a088092a10ed4afd3d84aa4bbc32fcfef25bf910d7bfaab76
-  languageName: node
-  linkType: hard
-
 "@types/node@npm:*, @types/node@npm:^18.11.12":
   version: 18.11.12
   resolution: "@types/node@npm:18.11.12"
@@ -435,14 +428,12 @@ __metadata:
   dependencies:
     "@prisma/client": "npm:4.7.1"
     "@types/node": "npm:^18.11.12"
-    "@types/node-cron": "npm:^3.0.7"
     "@typescript-eslint/eslint-plugin": "npm:^5.46.0"
     "@typescript-eslint/parser": "npm:^5.46.0"
     discord.js: "npm:^14.7.1"
     dotenv: "npm:^16.0.3"
     eslint: "npm:^8.29.0"
     module-alias: "npm:^2.2.2"
-    node-cron: "npm:^3.0.2"
     nodemon: "npm:^2.0.20"
     pino: "npm:^8.7.0"
     pino-pretty: "npm:^9.1.1"
@@ -1903,15 +1894,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-cron@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "node-cron@npm:3.0.2"
-  dependencies:
-    uuid: "npm:8.3.2"
-  checksum: 33803c86cad5aa6faacda4be5e8c42ec552446395af1d2bcabba835ac2fc0d24294b2fa3c6d64ce7af3fc6cf06ae1d0e6a08aace44a9075e96c5bda24b321d2a
-  languageName: node
-  linkType: hard
-
 "node-gyp@npm:latest":
   version: 9.3.1
   resolution: "node-gyp@npm:9.3.1"
@@ -2787,15 +2769,6 @@ __metadata:
   version: 1.0.2
   resolution: "util-deprecate@npm:1.0.2"
   checksum: 6a88ed8344d07f2324b304ee36def365d967953b5a9c15baa3213eb3909e86a7da1ee70a4c2133e80c23d6c1987590e9c3c57d874e20a124f9e41620b462fa57
-  languageName: node
-  linkType: hard
-
-"uuid@npm:8.3.2":
-  version: 8.3.2
-  resolution: "uuid@npm:8.3.2"
-  bin:
-    uuid: dist/bin/uuid
-  checksum: 236a12282c6fa32f326aa1b6d5699a843572e9ab7de84a1507a6b7c315fdcf55bf6ed333fd37d35c5c656f4cb96af998844e1c8cae281c442a1ec3b66df62962
   languageName: node
   linkType: hard
 

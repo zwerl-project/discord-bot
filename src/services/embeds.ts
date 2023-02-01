@@ -31,3 +31,10 @@ export const createActivityEmbed = async (target: User, presence: Presence) => {
 			};
 		}));	
 };
+
+export const createImageEmbed = async (imageUrl: string, title?: string) => {
+	return new EmbedBuilder()
+		.setColor(0x0099FF)
+		.setTitle(title || 'Image')
+		.setImage(imageUrl);
+};

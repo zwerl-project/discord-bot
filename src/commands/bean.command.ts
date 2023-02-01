@@ -1,4 +1,5 @@
-import { CommandInteraction, EmbedBuilder, SlashCommandBuilder, SlashCommandStringOption, SlashCommandUserOption } from 'discord.js';
+import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption, SlashCommandUserOption } from 'discord.js';
+import { createBeanEmbed } from '@services/embeds';
 import { errorWrapper } from '@middlewares/index';
 import { Command } from '@utils/commands';
 
@@ -13,7 +14,7 @@ const reasonOptions = new SlashCommandStringOption()
 	.setRequired(false);
 
 
-const pingCommand: Command = {
+const beanCommand: Command = {
 	data: new SlashCommandBuilder()
 		.setName('bean')
 		.setDescription('Beans a user')
@@ -23,27 +24,23 @@ const pingCommand: Command = {
 
 	middlewares: [errorWrapper],
 
-	async execute(interaction: CommandInteraction) {
+	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply({ ephemeral: false });
 
-		const user = interaction.options.getUser('user');
+		// Get the user that beaned the target user.
+		const sourceUser = interaction.user;
 
-		if (!user)
+		// Get the target user and the reason.
+		const targetUser = interaction.options.getUser('user');
+		const reason = interaction.options.getString('reason', false) ?? 'No reason provided.';
+		
+		if (!targetUser) 
 			throw new Error('Couldn\'t find the target user.');
 
-		const beanEmbed = new EmbedBuilder()
-			.setTitle('User Beaned')
-			.setColor(0x0099FF)
-			.setThumbnail(user.avatarURL())
-			.setDescription(`Beaned <@${user.id}>`)
-			.addFields(
-				{ name: 'Reason', value: interaction.options.get('reason')?.value as string || 'No reason provided' },
-				{ name: '"Responsible" "Moderator"', value: `<@${interaction.user.id}>` }
-			);
-        
+		const beanEmbed = await createBeanEmbed(sourceUser, targetUser, reason);
 		await interaction.editReply({ embeds: [beanEmbed] });
 
 	}
 };
 
-export default pingCommand;
+export default beanCommand;

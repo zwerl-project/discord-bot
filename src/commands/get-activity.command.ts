@@ -1,6 +1,7 @@
+import { CommandInteraction, SlashCommandBuilder, SlashCommandUserOption } from 'discord.js';
 import { errorWrapper, requiresModerator } from '@middlewares/index';
+import { createActivityEmbed } from '@services/embeds';
 import { Command } from '@utils/commands';
-import { APIEmbedField, CommandInteraction, EmbedBuilder, SlashCommandBuilder, SlashCommandUserOption } from 'discord.js';
 
 const userOption = new SlashCommandUserOption()
 	.setName('user')
@@ -19,42 +20,23 @@ const getActivityCommand: Command = {
 	async execute(interaction: CommandInteraction) {
 		await interaction.deferReply({ ephemeral: true });
 
-		const user = interaction.options.getUser('user');
-
-		if (!user) {
-			await interaction.editReply('An error has occured! Couldn\'t find the target user.');
-			return;
-		}
-
+		// Obtain the guild and the target user.
 		const guild = interaction.guild;
+		const target = interaction.options.getUser('user');
 
-		if (!guild) {
-			await interaction.editReply('An error has occured! Couldn\'t find user guild.');
-			return;
-		}
+		if (!guild) throw new Error('Couldn\'t find user guild.');
+		if (!target) throw new Error('Couldn\'t find the target user.');
 
+		// Obtain the target user's presence.
 		const presences = Array.from(guild.presences.cache.values());
-		const userPresence = presences.find(presence => presence.userId === user.id);
+		const targetsPresence = presences.find(presence => presence.userId === target.id);
 
-		if (!userPresence) {
-			await interaction.editReply('An error has occured! Couldn\'t retrive user\'s presence.');
-			return;
-		}
+		if (!targetsPresence) throw new Error('Couldn\'t retrive user\'s presence.');
 
-		const activityEmbed = new EmbedBuilder()
-			.setColor(0x0099FF)
-			.setTitle('User Activity')
-			.setThumbnail(user?.avatarURL())
-			.addFields(
-				{ name: 'Identification', value: `Target user: <@${user?.id}>\nCurrent status: \`${userPresence.clientStatus?.desktop}\`` },
-			).addFields(userPresence.activities.map((activity): APIEmbedField => {
-				return { 
-					name: activity.name || 'Unknown Activity',
-					value: `${activity.state}: ${activity.details}` || 'This activity has no details'
-				};
-			}));
-
-		await interaction.editReply(`Shown activities for user <@${user.id}>`);
+		// Create the activity embed and send it.
+		const activityEmbed = await createActivityEmbed(target, targetsPresence);
+		
+		await interaction.editReply(`Shown activities for user <@${target.id}>`);
 		await interaction.channel?.send({ embeds: [activityEmbed] });
 	}
 };

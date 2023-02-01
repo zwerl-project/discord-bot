@@ -1,32 +1,29 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption } from 'discord.js';
 import { errorWrapper, onlyNSFW } from '@middlewares/index';
-import { getRandomPost, searchPosts } from '@services/yiff';
-import { Command } from '@utils/commands';
 import { createImageEmbed } from '@services/embeds';
+import { Command } from '@utils/commands';
+import { getPost } from '@services/yiff';
 
 const tagsOption = new SlashCommandStringOption()
-	.setName('tags')
-	.setDescription('Tags to search for.')
-	.setRequired(false);
+	.setName('id')
+	.setDescription('The id of the post.')
+	.setRequired(true);
 
-const yiffCommand: Command = {
+const yiffIdCommand: Command = {
 	data: new SlashCommandBuilder()
-		.setName('yiff')
+		.setName('yiff-id')
 		.addStringOption(tagsOption)
-		.setDescription('Finds yiff in e621 and sends it to the channel.'),
+		.setDescription('Finds yiff with a specific id in e621.'),
 
 	middlewares: [errorWrapper, onlyNSFW],
 
 	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply();
 
-		const tags = interaction.options.getString('tags', false);
+		const id = interaction.options.getString('id', true);
 
 		// Get random post and send it
-		let postData;
-
-		if (!tags) postData = await getRandomPost();
-		else postData = await searchPosts(tags);
+		const postData = await getPost(id);
 
 		if (!postData) {
 			await interaction.editReply({ content: 'Couldn\'t find any posts with the given tags.' });
@@ -35,9 +32,9 @@ const yiffCommand: Command = {
 
 		const [postId, postUrl] = postData;
 
-		const postEmbed = await createImageEmbed(postUrl, 'Random E621 Post', `https://e621.net/posts/${postId}`);
+		const postEmbed = await createImageEmbed(postUrl, `E621 Post #${id}`, `https://e621.net/posts/${postId}`);
 		await interaction.editReply({ embeds: [postEmbed] });
 	}
 };
 
-export default yiffCommand;
+export default yiffIdCommand;

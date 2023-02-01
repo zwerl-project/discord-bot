@@ -1,20 +1,38 @@
-export const getRandomPost = async () => {
-	const response = await fetch('https://e621.net/posts/random.json');
-	if (response.status !== 200)
-		throw new Error(`Failed to get random post from e621. Status code: ${response.status}`);
+import axios from 'axios';
 
-	const { post } = await response.json();
-	return post.file.url;
+type Post = [id: number, url: string];
+
+const client = axios.create({
+	baseURL: 'https://e621.net',
+	headers: {
+		'User-Agent': '@zwerl/discord-bot/1.0 (DownloadableFox)',
+	},
+});
+
+export const getRandomPost = async (): Promise<Post> => {
+	const { data } = await client.get('/posts/random.json');
+	return [data.post.id, data.post.file.url];
 };
 
-export const searchPosts = async (tags: string) => {
-	const response = await fetch(`https://e621.net/posts.json?tags=${tags}`);
+export const searchPosts = async (tags: string): Promise<Post | null> => {
+	const { data } = await client.get(
+		'/posts.json', 
+		{ params: { tags } }
+	);
 
-	if (response.status !== 200)
-		throw new Error(`Failed to search for post with tags "${tags}" on e621. Status code: ${response.status}`);
+	if (data.posts.length === 0) return null;
 
-	const { posts } = await response.json();
+	const post = data.posts[Math.floor(Math.random() * data.posts.length)];
 
-	if (posts.length === 0) return null;
-	return posts[Math.floor(Math.random() * posts.length)].file.url as string;
+	return [
+		post.id,
+		post.file.url as string
+	];
+};
+
+export const getPost = async (id: string): Promise<Post | null> => {
+	const { data } = await client.get(`/posts/${id}.json`);
+
+	if (!data.post) return null;
+	return [data.post.id, data.post.file.url];
 };

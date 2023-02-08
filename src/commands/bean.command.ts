@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption, SlashCommandUserOption } from 'discord.js';
-import { createBeanEmbed } from '@services/embeds';
-import { errorWrapper } from '@middlewares/index';
-import { Command } from '@utils/commands';
+import { EmbedService } from '@services';
+import { errorWrapper } from '@middlewares';
+import { Command } from '@interfaces';
 
 const userOptions = new SlashCommandUserOption()
 	.setName('user')
@@ -37,7 +37,7 @@ const beanCommand: Command = {
 		if (!targetUser) 
 			throw new Error('Couldn\'t find the target user.');
 
-		const beanEmbed = await createBeanEmbed(sourceUser, targetUser, reason);
+		const beanEmbed = await EmbedService.createBeanEmbed(sourceUser, targetUser, reason);
 		await interaction.editReply({ embeds: [beanEmbed] });
 
 	}

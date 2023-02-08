@@ -1,4 +1,4 @@
-import { Middleware } from '@utils/middleware';
+import { Middleware } from '@interfaces';
 import logger from '@utils/logger';
 
 const errorWrapper: Middleware = {

@@ -1,19 +1,30 @@
-import fs from 'fs';
-import path from 'path';
+import { Client } from 'discord.js';
+import { ModuleValidator, searchModules } from '@utils/files';
+import { Task } from '@interfaces';
 import logger from '@utils/logger';
 import cron from 'node-cron';
-import { Client } from 'discord.js';
-
-export interface Task {
-	schedule: string;
-	execute: (client: Client) => Promise<void>;
-}
 
 declare module 'discord.js' {
 	interface Client {
-		tasks: Task[];
+		tasks: Map<string, Task>;
 	}
 }
+
+const validateTask: ModuleValidator = async (module: unknown, filename: string): Promise<boolean> => {
+	if (!module || typeof module !== 'object') {
+		logger.warn(`Task file "${filename}" is not an object! Skipping...`);
+		return false;
+	}
+
+	const { default: task } = module as { default: Task };
+
+	if (!task?.schedule || !task?.execute) {
+		logger.warn(`Task file "${filename}" is missing schedule or execute! Skipping...`);
+		return false;
+	}
+
+	return true;
+};
 
 export const tasksErrorHandler = (execute: (client: Client) => Promise<void>) => (client: Client) => {
 	try {
@@ -24,27 +35,24 @@ export const tasksErrorHandler = (execute: (client: Client) => Promise<void>) =>
 };
 
 export const registerTasks = async (client: Client) => {
-	client.tasks = [];
+	client.tasks = new Map();
 
-	const taskPath = path.join(__dirname, '../tasks');
-	const taskFiles = fs.readdirSync(taskPath).filter(file => file.endsWith('.task.js'));
+	const modules = await searchModules({
+		folder: 'tasks',
+		extension: '.task.js',
+		recursive: true
+	}, validateTask);
 
-	for (const file of taskFiles) {
-		const filePath = path.join(taskPath, file);
-		const { default: task } = await import(filePath) as { default: Task };
-
-		if (!task?.schedule || !task?.execute) {
-			logger.warn(`Task file "${file}" is missing schedule or execute! Skipping...`);
-			continue;
-		}
+	for (const module of modules) {
+		const { default: task } = module as { default: Task };
 
 		if (!cron.validate(task.schedule)) {
-			logger.warn(`Task file "${file}" has an invalid schedule! Skipping...`);
+			logger.warn(`Task file "${task.name}" has an invalid schedule! Skipping...`);
 			continue;
 		}
 
-		client.tasks.push(task);
+		client.tasks.set(task.name, task);
 	}
 
-	logger.info(`Registered ${client.tasks.length} tasks!`);
+	logger.info(`Registered ${client.tasks.size} tasks!`);
 };

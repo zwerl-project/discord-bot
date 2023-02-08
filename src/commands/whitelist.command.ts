@@ -1,7 +1,6 @@
-import { isWhitelisted, whitelistUser } from '@services/users';
-import { requiresModerator, errorWrapper } from '@middlewares/index';
-import { Command } from '@utils/commands';
-import logger from '@utils/logger';
+import { UserService } from '@services';
+import { requiresModerator, errorWrapper } from '@middlewares';
+import { Command } from '@interfaces';
 
 import { ChatInputCommandInteraction, SlashCommandBooleanOption, SlashCommandBuilder, SlashCommandUserOption } from 'discord.js';
 
@@ -28,17 +27,17 @@ const whitelistedCommand: Command = {
 	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply({ ephemeral: true });
 
+		const { guild } = interaction;
+		if (!guild) throw new Error('Couldn\'t find user guild.');
+
 		const user = interaction.options.getUser('user', true);
 		const remove = interaction.options.getBoolean('remove', false) ?? false;
 		
-		await whitelistUser(user.id, remove);
-		const whitelisted = await isWhitelisted(user.id);
+		await UserService.whitelistUser(user.id, guild.id, remove);
 
 		await interaction.editReply({
-			content: `User updated! <@${user.id}> is now ${whitelisted === true ? 'whitelisted' : 'blacklisted'}.`
+			content: `User updated! <@${user.id}> is now ${remove ? 'whitelisted' : 'blacklisted'}.`
 		});
-
-		logger.info(`Updated user ${user.username} (${user.id}) => ${whitelisted === true ? 'whitelisted' : 'blacklisted'}.`);
 	}
 };
 

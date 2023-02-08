@@ -1,8 +1,7 @@
 import { ChatInputCommandInteraction, Guild, SlashCommandBuilder } from 'discord.js';
-import { errorWrapper, requiresModerator } from '@middlewares/index';
-import { isWhitelisted, whitelistUser } from '@services/users';
-import { Command } from '@utils/commands';
-import logger from '@utils/logger';
+import { errorWrapper, requiresModerator } from '@middlewares';
+import { UserService } from '@services';
+import { Command } from '@interfaces';
 
 const whitelistedCommand: Command = {
 	data: new SlashCommandBuilder()
@@ -12,16 +11,13 @@ const whitelistedCommand: Command = {
 
 
 	middlewares: [errorWrapper, requiresModerator],
-
+	
 	async execute(interaction: ChatInputCommandInteraction) {
 		await interaction.deferReply({ ephemeral: true });
 		const guild = interaction.guild as Guild;
 
 		await guild.members.cache.each(async user => {
-			await whitelistUser(user.id);
-			const whitelisted = await isWhitelisted(user.id);
-
-			logger.info(`Updated user ${user.displayName} (${user.id}) => ${whitelisted === true ? 'whitelisted' : 'blacklisted'}.`);
+			await UserService.whitelistUser(user.id, guild.id);
 		});
 
 		await interaction.editReply('Memebers have been updated!');

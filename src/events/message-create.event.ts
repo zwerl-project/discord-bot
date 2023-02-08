@@ -1,24 +1,14 @@
-import { Event } from '@utils/events';
-import prisma from '@utils/prisma';
+import { Event } from '@interfaces';
 import { Events, Message } from 'discord.js';
+import { LoggingService } from '@services';
 
 const mesageCreateEvent: Event = {
-	name: Events.MessageCreate,
+	name: 'logging-message-create',
+	on: Events.MessageCreate,
 	once: false,
 	async execute(message: Message<true>) {
 		if (message.author.bot) return;
-		
-		await prisma.guildMessage.create({
-			data: {
-				messageId: message.id,
-				authorId: message.author.id,
-				channelId: message.channelId,
-				guildId: message.guildId,
-				content: message.content,
-			}
-		});
-
-        
+		await LoggingService.createOrUpdateMessage(message);
 	}
 };
 

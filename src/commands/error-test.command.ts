@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption } from 'discord.js';
-import { errorWrapper, requiresModerator } from '@middlewares/index';
-import { Command } from '@utils/commands';
+import { errorWrapper, requiresModerator } from '@middlewares';
+import { Command } from '@interfaces';
 
 type TestType = 'normal' | 'replied' | 'deferred';
 
@@ -17,6 +17,7 @@ const errorTestCommand: Command = {
 		.setDescription('Executes an error to test the error handler.'),
 
 	middlewares: [errorWrapper, requiresModerator],
+	local: true,
 	
 	async execute(interaction: ChatInputCommandInteraction) {
 		const type: TestType = interaction.options.getString('type', true) as TestType;

@@ -1,6 +1,6 @@
 import { CommandInteraction, SlashCommandBuilder } from 'discord.js';
-import { errorWrapper } from '@middlewares/index';
-import { Command } from '@utils/commands';
+import { errorWrapper } from '@middlewares';
+import { Command } from '@interfaces';
 
 const pingCommand: Command = {
 	data: new SlashCommandBuilder()

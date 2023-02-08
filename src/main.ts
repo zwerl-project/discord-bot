@@ -5,11 +5,11 @@ import { Client, GatewayIntentBits, REST } from 'discord.js';
 import { deployCommands, registerCommands } from '@utils/commands';
 import { registerEvents } from '@utils/events';
 import { registerTasks } from '@utils/tasks';
-import config from '@utils/config';
+import { EnvironmentSettings } from '@config';
 import logger from '@utils/logger';
 
-const token = config.token;
-const production = config.production;
+const token = EnvironmentSettings.token;
+const production = EnvironmentSettings.production;
 
 const client = new Client({
 	intents: [

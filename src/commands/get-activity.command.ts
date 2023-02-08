@@ -1,7 +1,7 @@
 import { CommandInteraction, SlashCommandBuilder, SlashCommandUserOption } from 'discord.js';
-import { errorWrapper, requiresModerator } from '@middlewares/index';
-import { createActivityEmbed } from '@services/embeds';
-import { Command } from '@utils/commands';
+import { errorWrapper, requiresModerator } from '@middlewares';
+import { EmbedService } from '@services';
+import { Command } from '@interfaces';
 
 const userOption = new SlashCommandUserOption()
 	.setName('user')
@@ -16,6 +16,7 @@ const getActivityCommand: Command = {
 		.setDMPermission(false),
 
 	middlewares: [errorWrapper, requiresModerator],
+	local: true,
 
 	async execute(interaction: CommandInteraction) {
 		await interaction.deferReply({ ephemeral: true });
@@ -34,7 +35,7 @@ const getActivityCommand: Command = {
 		if (!targetsPresence) throw new Error('Couldn\'t retrive user\'s presence.');
 
 		// Create the activity embed and send it.
-		const activityEmbed = await createActivityEmbed(target, targetsPresence);
+		const activityEmbed = await EmbedService.createActivityEmbed(target, targetsPresence);
 		
 		await interaction.editReply(`Shown activities for user <@${target.id}>`);
 		await interaction.channel?.send({ embeds: [activityEmbed] });

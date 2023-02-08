@@ -1,9 +1,10 @@
 import { CommandInteraction, Events } from 'discord.js';
-import { Event } from '@utils/events';
+import { Event } from '@interfaces';
 import logger from '@utils/logger';
 
 const onCommandEvent: Event = {
-	name: Events.InteractionCreate,
+	name: 'core-command',
+	on: Events.InteractionCreate,
 	once: false,
 	async execute(interaction: CommandInteraction) {
 		if (!interaction.isChatInputCommand()) return;

@@ -1,5 +1,5 @@
 import { TextChannel } from 'discord.js';
-import { Middleware } from '@utils/middleware';
+import { Middleware } from '@interfaces';
 import logger from '@utils/logger';
 
 const onlyNSFW: Middleware = {

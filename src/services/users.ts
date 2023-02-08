@@ -1,3 +1,4 @@
+import logger from '@utils/logger';
 import prisma from '@utils/prisma';
 
 export const getUser = async (userId: string) => {
@@ -20,20 +21,33 @@ export const getUser = async (userId: string) => {
 };
 
 
-export const isWhitelisted = async (userId: string) => {
+export const isWhitelisted = async (userId: string, guildId: string) => {
 	const user = await getUser(userId);
-	return user.whitelisted;
+	return user.whitelistedGuilds.includes(guildId);
 };
 
-export const whitelistUser = async (userId: string, remove = false) => {
+export const whitelistUser = async (userId: string, guildId: string, remove = false) => {
 	const user = await getUser(userId);
 
-	await prisma.user.update({
+	const whitelistedGuilds = user.whitelistedGuilds;
+
+	if (remove) {
+		const index = whitelistedGuilds.indexOf(guildId);
+		if (index > -1) {
+			whitelistedGuilds.splice(index, 1);
+		}
+	} else {
+		whitelistedGuilds.push(guildId);
+	}
+
+	logger.info(`User ${userId} has been ${remove ? 'removed from' : 'added to'} the whitelist for guild ${guildId}.`);
+
+	return await prisma.user.update({
 		where: {
-			id: user.id
+			userId
 		},
 		data: {
-			whitelisted: !remove
+			whitelistedGuilds
 		}
 	});
 };

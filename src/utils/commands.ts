@@ -1,58 +1,98 @@
-import fs from 'fs';
-import path from 'path';
-import config from '@utils/config'; 
+import { Client, REST, Routes } from 'discord.js';
+import { EnvironmentSettings, GuildSettings } from '@config';
+import { GuildService } from '@services';
+import { Command } from '@interfaces';
+import { ModuleValidator, searchModules } from '@utils/files';
 import logger from '@utils/logger';
-import { Middleware } from '@utils/middleware';
-
-import { SlashCommandBuilder } from '@discordjs/builders';
-import { Client, Collection, CommandInteraction, REST, Routes } from 'discord.js';
-
-export interface Command extends Middleware {
-    data: SlashCommandBuilder;
-	middlewares?: Middleware[];
-    execute(interaction: CommandInteraction): Promise<void>;
-}
 
 declare module 'discord.js' {
     interface Client {
-        commands: Collection<string, Command>;
+        commands: Map<string, Command>;
     }
 }
+
+const validateCommand: ModuleValidator = async (module: unknown, filename: string): Promise<boolean> => {
+	if (!module || typeof module !== 'object') {
+		logger.warn(`Command file "${filename}" is not an object! Skipping...`);
+		return false;
+	}
+
+	const { default: command } = module as { default: Command };
+
+	if (!command?.data || !command?.execute) {
+		logger.warn(`Command file "${filename}" is missing data or execute! Skipping...`);
+		return false;
+	}
+
+	return true;
+};
 
 export const registerCommands = async (client: Client) => {
 	logger.info('Registering commands...');
 
-	client.commands = new Collection(); 
+	client.commands = new Map();
 
-	const commandPath = path.join(__dirname, '../commands');
-	const commandFiles = fs.readdirSync(commandPath).filter(file => file.endsWith('.command.js'));
+	const modules = await searchModules({
+		folder: 'commands',
+		extension: '.command.js',
+		recursive: true
+	}, validateCommand);
 
-	for (const file of commandFiles) {
-		const filePath = path.join(commandPath, file);
-		const { default: command } = await import(filePath) as { default: Command };
+	for (const module of modules) {
+		const { default: command } = module as { default: Command };
 
-		if (!command?.data || !command?.execute) {
-			logger.warn(`Command file "${file}" is missing data or execute! Skipping...`);
+		if (client.commands.has(command.data.name)) {
+			logger.warn(`Command "${command.data.name}" is already registered! Skipping...`);
 			continue;
 		}
 
+		if (command.disabled) {
+			logger.warn(`Command "${command.data.name}" is disabled! Skipping...`);
+			continue;
+		}
+		
 		client.commands.set(command.data.name, command);
 	}
 
 	logger.info(`Registered ${client.commands.size} commands!`);
 };
 
+const getCommandsForGuild = async (commands: Command[], guildId: string) => {
+	const guild = await GuildService.getGuildInfoById(guildId);
+	if (!guild) return [];
+
+	const guildCommands = commands
+		.filter(command => {
+			if (!command.local) return true;
+
+			const guildCommand = guild.commands?.find(guildCommand => guildCommand === command.data.name);
+			if (!guildCommand) return false;
+			return true;
+		})
+		.map(command => command.data.toJSON());
+	
+	return guildCommands;
+};
+
+
 export const deployCommands = async (client: Client, rest: REST) => {
 	logger.info('Deploying commands to REST...');
 
-	const commands = client.commands.map(command => command.data.toJSON());
+	const commands = Array.from(client.commands.values());
 
 	try {
-		await rest.put(
-			Routes.applicationGuildCommands(config.clientId, config.guildId),
-			{ body: commands }
-		);
+		for await (const guildInfo of GuildSettings) {
+			const guildCommands = await getCommandsForGuild(commands, guildInfo.guildId);
+
+			await rest.put(
+				Routes.applicationGuildCommands(EnvironmentSettings.clientId, guildInfo.guildId),
+				{ body: guildCommands }
+			);
+		}
 	} catch (error) {
 		logger.warn('There was an error while deploying commands to REST!', error);
+
+		if (!EnvironmentSettings.production)
+			logger.error(error);
 	}
 };

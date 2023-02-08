@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption, TextBasedChannel } from 'discord.js';
-import { errorWrapper, requiresModerator } from '@middlewares/index';
-import { Command } from '@utils/commands';
+import { errorWrapper, requiresModerator } from '@middlewares';
+import { Command } from '@interfaces';
 
 const messageOption = new SlashCommandStringOption()
 	.setName('message')

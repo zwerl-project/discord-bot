@@ -60,7 +60,6 @@ export const getGuild = async (client: Client<true>, alt: string) => {
 	return client.guilds.cache.get(guildInfo.guildId);
 };
 
-
 export const getLogsChannel = async (guild: Guild) => {
 	const guildInfo = await getGuildInfoById(guild.id);
 	if (!guildInfo?.logsChannel) return undefined;

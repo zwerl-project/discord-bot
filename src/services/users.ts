@@ -3,19 +3,15 @@ import prisma from '@utils/prisma';
 
 export const getUser = async (userId: string) => {
 	// get user from database, create if it doesn't exist
-	const user = await prisma.user.findUnique({
+	const user = await prisma.user.upsert({
 		where: {
+			userId
+		},
+		update: {},
+		create: {
 			userId
 		}
 	});
-	
-	if (!user) {
-		return await prisma.user.create({
-			data: {
-				userId
-			}
-		});
-	}
 
 	return user;
 };

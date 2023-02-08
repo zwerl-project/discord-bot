@@ -16,10 +16,9 @@ const userJoinEvent: Event = {
 		
 		// get system message's channel
 		const channel = member.guild.systemChannel;
-		if (!channel) return;
-
-		// send system message
-		await channel.send(`Welcome to the server, ${member}!`);
+		if (channel) {
+			await channel.send(`Welcome to the server, ${member}!`);
+		}
        
 		// get default role
 		const defaultRole = await GuildService.getDefaultRole(member.guild);

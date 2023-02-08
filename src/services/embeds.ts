@@ -11,7 +11,7 @@ export const createBeanEmbed = async (source: User, target: User, reason: string
 		.setDescription(`Beaned <@${target.id}>`)
 		.addFields(
 			{ name: 'Reason', value: reason },
-			{ name: '"Responsible" "Moderator"', value: `<@${source}>` }
+			{ name: '"Responsible" "Moderator"', value: `<@${source.id}>` }
 		);
 };
 

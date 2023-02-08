@@ -1,9 +1,8 @@
 import { Events, GuildMember } from 'discord.js';
 import { Event } from '@interfaces';
-import { UserService, GuildService } from '@services';
+import { GuildService, UserService } from '@services';
 import logger from '@utils/logger';
 
-// TODO: devide this event into two: user-join and whitelist-check
 const userJoinEvent: Event = {
 	name: 'extras-user-join',
 	on: Events.GuildMemberAdd,
@@ -11,17 +10,10 @@ const userJoinEvent: Event = {
 	async execute(member: GuildMember) {
 		logger.info(`User ${member.user.tag} joined guild ${member.guild.name}`);
 
-		// check if user is already in database
 		const whitelisted = await UserService.isWhitelisted(member.id, member.guild.id);
 		const whitelistOn = await GuildService.isWhitelistOnly(member.guild.id);
-		if (whitelistOn && !whitelisted) {
-			logger.info(`User ${member.user.tag} is not whitelisted! Kicking...`);
-			
-			await member.send(`Hey. You tried to join ${member.guild.name}, but you're not whitelisted. If you think this is a mistake, contact an admin.}`);
-			await member.kick();
-			return;
-		}
-
+		if (whitelistOn && !whitelisted) return;
+		
 		// get system message's channel
 		const channel = member.guild.systemChannel;
 		if (!channel) return;

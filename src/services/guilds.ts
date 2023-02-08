@@ -2,17 +2,17 @@ import { Client, Guild } from 'discord.js';
 import { GuildSettings } from '@config';
 import prisma from '@utils/prisma';
 
-export const getOrCreateGuild = (id: string) => {
+export const getOrCreateGuild = (guildId: string) => {
 	const guild = prisma.guild.findUnique({
 		where: {
-			id
+			guildId: guildId
 		}
 	});
 
 	if (!guild) {
 		return prisma.guild.create({
 			data: {
-				guildId: id
+				guildId: guildId
 			}
 		});
 	}
@@ -32,7 +32,7 @@ export const isWhitelistOnly = async (guildId: string) => {
 export const whitelistSet = async (guildId: string, whitelistEnabled: boolean) => {
 	return await prisma.guild.upsert({
 		where: {
-			id: guildId
+			guildId: guildId
 		},
 		update: {
 			whitelistEnabled

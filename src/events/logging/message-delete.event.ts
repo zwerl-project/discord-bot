@@ -8,7 +8,7 @@ const messageDeleteEvent: Event = {
 	on: Events.MessageDelete,
 	once: false,
 	async execute(message: Message<true>) {
-		if (message.author.bot) return;
+		if (message.author.bot || message.author.id === message.client.user.id) return;
 		
 		await LoggingService.updateDeletedMessage(message);
 		

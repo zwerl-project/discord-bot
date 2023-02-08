@@ -8,7 +8,7 @@ const messageEditEvent: Event = {
 	on: Events.MessageUpdate,
 	once: false,
 	async execute(_: Message<true>, message: Message<true>) {
-		if (message.author.bot) return;
+		if (message.author.bot || message.author.id === message.client.user.id) return;
 		
 		const cachedMessage = await LoggingService.getMessage(message.id);
 		await LoggingService.createOrUpdateMessage(message);

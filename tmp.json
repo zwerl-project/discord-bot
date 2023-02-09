@@ -1,19 +1,9 @@
 {
 	"embeds": [
 		{
-			"title": "Welcome to the Content Styled server!",
-			"color": 16711759,
-			"description": "This Discord is about a Content SMP style PvP server, where you can fight others using the same mods as the aforementioned SMP's members do.\nThis server is an off branch of the [Rattiest Gang](https://discord.gg/rattiestgang), and is owned by <@556132236697665547>.\n\nYou can donate to [Luda's Ko-Fi](https://downloadablefox.dev/ko-fi) to help cover the costs of running the server, even the smallest amount will be greatly appreciated :sparkles:"
-		},
-		{
-			"title": "Rules",
-			"color": 9519532,
-			"description": "**1.** Follow the [Discord Guidelines](https://discord.com/guidelines) and the [Terms of Service](https://discord.com/terms).\n\n**2.** Follow the spirit of the rules, not just the actual words; act in good faith.\n\n**3.** Only speak English, we cannot reliably moderate other languages.\n\n**4.** You can contract any of the Admins or the Moderators if you need help with something.\n\n**5.** Absolutely no discriminatory behavior is allowed, including but not limited to using slurs, invalidating anyone's identity, insulting any group of people, transphobia, homophobia, racism or xenophobia. \n\n**6.** Using sarcasm or trolling as your excuse for breaking the rules will not help.\n\n**7.** Stay PG13 at all times – no NSFW topics or substance talk.\n\n**8.** Avoid controversial topics like politics or religion.\n\n**9.** Do not spam, whether that be with pings, text, images or gifs.\n\n**10.** Do not self promote or post invites to other Discord servers unless given explicit permission by the staff team.\n\n**11.** Do not use hoisting names or nicknames (names that begin with a special character or number for the purpose of putting yourself higher up in the user lists).\n\n**12.** Play nicely – do not ruin other's fun in the Minecraft server by being toxic or trolling.\n\n**13.** See <#1072618086789812325> for, well, information about joining the server and getting the required mods.\n\n**14.** Have fun :>"
-		},
-		{
-			"title": "Useful Links",
-			"color": 6463722,
-			"description": "» [Information](https://discord.com/channels/1072591534588965075/1072618086789812325)\n» [Rattiest Gang](https://discord.gg/rattiestgang)\n» [Donations](https://downloadablefox.dev/ko-fi)"
+			"title": "How do I apply for Builder?",
+			"color": 9433252,
+			"description": "The applications for Builder are now **open**! Remember to be concise and careful with your answers.\n\nTo start a thread is really easy! Just use the `/apply builder` command in <#1072591536572862568>. If you're having any problems feel free to ping <@556132236697665547>."
 		}
 	]
 }

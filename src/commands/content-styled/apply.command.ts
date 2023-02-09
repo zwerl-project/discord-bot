@@ -64,7 +64,7 @@ const applyCommand: ApplyCommand = {
 	},
 
 	async applyForDeveloper(interaction: ChatInputCommandInteraction) {
-		await interaction.reply({ ephemeral: true, content: 'Developer applications are currently closed.' });
+		await interaction.editReply({ content: 'Developer applications are currently closed.' });
 	}
 };
 

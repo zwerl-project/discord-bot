@@ -58,7 +58,7 @@ const applyCommand: ApplyCommand = {
 		const buttons = await EmbedService.createBuilderApplicationComponents();
 
 		await thread.send({ embeds: [embed], components: [buttons] });
-		await thread.send({ content: `**Attention:** ${member} you have started an application, please respond to the questions in this thread. Beware that you may close this application at any point by clicking the red button above. The moderator <@221054071736369152> will be reviewing it- Please, be paitient and **do not ping them to make the process go faster**.` });
+		await thread.send({ content: `**Attention:** ${member} you have started an application, please respond to the questions in this thread. Beware that you may close this application at any point by clicking the red button above. The moderator <@221054071736369152> will be reviewing it- Please, be patient and **do not ping them to make the process go faster**.` });
 		
 		await interaction.editReply({ content: 'A new thread was created for your application, follow the ping!' });
 	},

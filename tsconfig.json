@@ -35,6 +35,7 @@
       "@services": ["services"],
       "@middlewares": ["middlewares"],
       
+      "@web/*": ["web/*"],
       "@utils/*": ["utils/*"],
       "@events/*": ["events/*"],
       "@commands/*": ["commands/*"],

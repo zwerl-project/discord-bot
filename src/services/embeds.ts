@@ -1,4 +1,4 @@
-import { Message, Presence, User } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, GuildMember, Message, Presence, User } from 'discord.js';
 import { EmbedBuilder } from '@discordjs/builders';
 import { GuildMessage } from '@prisma/client';
 import { randomBytes } from 'crypto';
@@ -91,4 +91,51 @@ export const createMessageDeletedEmbed = async (message: Message) => {
 		})
 		.addFields({ name: 'Log ID', value: `This field is used for adding notes to this log message.\n${randomBytes(15).toString('hex')}`, inline: false })
 		.setFooter({ text: `${message.id} • ${new Date(message.createdTimestamp).toLocaleString()}` });
+};
+
+export const createBuilderApplicationEmbed = async (user: GuildMember, status: 'pending' | 'closed' | 'approved' | 'denied') => {
+	return new EmbedBuilder()
+		.setAuthor({ name: user.user.tag, iconURL: user.user.avatarURL() as string })
+		.setColor(0x0099FF)
+		.addFields([
+			{ 
+				name: 'Information',
+				value: 'You have created a new builder application for the Content Styled server.\n Please beware that we\'re a small team and the application process may take a while. Make sure that you answers to all the questions carefully, take your time.\n\n', 
+				inline: false 
+			},
+			{
+				name: 'Application Status',
+				value: status,
+				inline: true
+			},
+			{
+				name: 'Reviewer',
+				value: '<@221054071736369152>',
+				inline: true
+			},
+			{
+				name: 'Application ID',
+				value: `Your application ID is \`${randomBytes(15).toString('hex')}\`. Please use this ID when contacting us about your application.`,
+				inline: false
+			},
+		])
+		.setFooter({ text: user.id });
+};
+
+export const createBuilderApplicationComponents = async () => {
+	return new ActionRowBuilder<ButtonBuilder>()
+		.addComponents(
+			new ButtonBuilder()
+				.setCustomId('approve-application')
+				.setLabel('Approve')
+				.setStyle(ButtonStyle.Success),
+			new ButtonBuilder()
+				.setCustomId('deny-application')
+				.setLabel('Deny')
+				.setStyle(ButtonStyle.Secondary),
+			new ButtonBuilder()
+				.setCustomId('close-application')
+				.setLabel('Close Application')
+				.setStyle(ButtonStyle.Danger)
+		);
 };

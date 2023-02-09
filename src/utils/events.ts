@@ -25,9 +25,9 @@ const validateEvent: ModuleValidator = async (module: unknown, filename: string)
 	return true;
 };
 
-const eventErrorHandler = (execute: (...args: unknown[]) => Promise<void>) => (...args: unknown[]) => {
+const eventErrorHandler = (event: Event) => (...args: unknown[]) => {
 	try {
-		return execute(...args);
+		event.execute(...args);
 	} catch (error) {
 		logger.error(error);
 	}
@@ -60,11 +60,11 @@ export const registerEvents = async (client: Client) => {
 		client.events.set(event.name, event);
 
 		if (event.once) {
-			client.once(event.on, eventErrorHandler(event.execute));
+			client.once(event.on, eventErrorHandler(event));
 			continue;
 		}
 
-		client.on(event.on, eventErrorHandler(event.execute));
+		client.on(event.on, eventErrorHandler(event));
 	}
 
 	logger.info(`Registered ${client.events.size} events!`);

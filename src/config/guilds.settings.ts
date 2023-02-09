@@ -22,7 +22,7 @@ const settings: GuildSettings[] = [
 		moderatorRole: '1072594675598377031',
 		defaultRole: '1072609132873535590',
 		logsChannel: '1072930054650208296',
-		commands: []
+		commands: ['apply']
 	}
 ];
 

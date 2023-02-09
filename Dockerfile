@@ -1,14 +1,10 @@
 FROM node:18-bullseye-slim
 
-# Defining environment variables
-ENV NODE_ENV=production
-
 # Create app directory
 WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY package.json .
-COPY yarn.lock .
 RUN yarn install
 
 # Prisma source

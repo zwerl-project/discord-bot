@@ -26,17 +26,16 @@ const rest = new REST({version: '10'}).setToken(token);
 const main = async () => {
 	if (!production) logger.warn('Running in development mode!');
 
-	// commands
+	// register commands, events and tasks
 	await registerCommands(client);
-	await deployCommands(client, rest);
-
-	// events
 	await registerEvents(client);
-
-	// tasks
 	await registerTasks(client);
 
-	client.login(token);
+	// login
+	await client.login(token);
+
+	// deploy commands
+	await deployCommands(client, rest);
 };
 
 main().catch(error => logger.error(`Unexpected error occured: ${error}`));

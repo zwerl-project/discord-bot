@@ -8,6 +8,8 @@ const userJoinEvent: Event = {
 	on: Events.GuildMemberAdd,
 	once: false,
 	async execute(member: GuildMember) {
+		if (member.user.bot) return; // if it is a bot ignore it
+
 		const whitelisted = await UserService.isWhitelisted(member.id, member.guild.id);
 		const whitelistOn = await GuildService.isWhitelistOnly(member.guild.id);
 		

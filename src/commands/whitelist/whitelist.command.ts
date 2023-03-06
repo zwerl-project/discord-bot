@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandSubcommandBuilder } from 'discord.js';
-import { requiresModerator, errorWrapper } from '@middlewares';
+import { requiresModerator, errorWrapper } from '@middlewares/commands';
 import { GuildService, UserService } from '@services';
 import { Command } from '@interfaces';
 

@@ -1,6 +1,6 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption, SlashCommandUserOption } from 'discord.js';
 import { EmbedService } from '@services';
-import { errorWrapper } from '@middlewares';
+import { errorWrapper } from '@middlewares/commands';
 import { Command } from '@interfaces';
 
 const userOptions = new SlashCommandUserOption()

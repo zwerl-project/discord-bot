@@ -34,8 +34,6 @@ const eventErrorHandler = (event: Event) => (...args: unknown[]) => {
 };
 
 export const registerEvents = async (client: Client) => {
-	logger.info('Registering events...');
-
 	client.events = new Map();
 
 	const modules = await searchModules({

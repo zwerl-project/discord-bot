@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandStringOption } from 'discord.js';
-import { errorWrapper, requiresModerator } from '@middlewares';
+import { errorWrapper, requiresModerator } from '@middlewares/commands';
 import { Command } from '@interfaces';
 
 type TestType = 'normal' | 'replied' | 'deferred';

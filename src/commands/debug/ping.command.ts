@@ -1,5 +1,5 @@
 import { CommandInteraction, SlashCommandBuilder } from 'discord.js';
-import { errorWrapper } from '@middlewares';
+import { errorWrapper } from '@middlewares/commands';
 import { Command } from '@interfaces';
 
 const pingCommand: Command = {

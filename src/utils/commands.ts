@@ -28,8 +28,6 @@ const validateCommand: ModuleValidator = async (module: unknown, filename: strin
 };
 
 export const registerCommands = async (client: Client) => {
-	logger.info('Registering commands...');
-
 	client.commands = new Map();
 
 	const modules = await searchModules({
@@ -76,12 +74,15 @@ const getCommandsForGuild = async (commands: Command[], guildId: string) => {
 
 
 export const deployCommands = async (client: Client, rest: REST) => {
-	logger.info('Deploying commands to REST...');
-
 	const commands = Array.from(client.commands.values());
 
 	try {
 		for await (const guildInfo of GuildSettings) {
+			if (!client.guilds.cache.has(guildInfo.guildId)) {
+				logger.warn(`Guild ${guildInfo.alt} (${guildInfo.guildId}) is not in cache! Skipping...`);
+				continue;
+			}
+
 			const guildCommands = await getCommandsForGuild(commands, guildInfo.guildId);
 
 			await rest.put(
@@ -89,6 +90,8 @@ export const deployCommands = async (client: Client, rest: REST) => {
 				{ body: guildCommands }
 			);
 		}
+
+		logger.info('Deployed commands to REST!');
 	} catch (error) {
 		logger.warn('There was an error while deploying commands to REST!', error);
 

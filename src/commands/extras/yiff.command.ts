@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandSubcommandBuilder } from 'discord.js';
-import { errorWrapper, onlyNSFW } from '@middlewares';
+import { errorWrapper, onlyNSFW } from '@middlewares/commands';
 import { YiffService, EmbedService } from '@services';
 import { Command } from '@interfaces';
 

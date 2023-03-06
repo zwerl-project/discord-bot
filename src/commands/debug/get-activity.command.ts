@@ -1,5 +1,5 @@
 import { CommandInteraction, SlashCommandBuilder, SlashCommandUserOption } from 'discord.js';
-import { errorWrapper, requiresModerator } from '@middlewares';
+import { errorWrapper, requiresModerator } from '@middlewares/commands';
 import { EmbedService } from '@services';
 import { Command } from '@interfaces';
 

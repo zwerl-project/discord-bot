@@ -1,5 +1,5 @@
 import { Command } from '@interfaces';
-import { errorWrapper } from '@middlewares';
+import { errorWrapper } from '@middlewares/commands';
 import { EmbedService, GuildService } from '@services';
 import { ChannelType, ChatInputCommandInteraction, GuildMember, SlashCommandBuilder, SlashCommandSubcommandBuilder, TextChannel } from 'discord.js';
 

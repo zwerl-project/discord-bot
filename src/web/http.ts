@@ -3,6 +3,6 @@ import { Application, Router } from 'express';
 
 const router = Router();
 
-export const registerRoutes = async (app: Application, client: Client) => {
+export const registerRoutes = async (app: Application, client: Client<true>) => {
 	return;
 };

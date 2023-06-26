@@ -5,6 +5,7 @@ import { GuildService } from '@services';
 const MihoFurryCheck: Task = {
 	name: 'miho-furry-check',
 	schedule: '0 */3 * * *',
+	disabled: true,
 	execute: async (client: Client) => {
 		const guild = await GuildService.getGuild(client, 'luda-cafe');
 		if (!guild) return;

@@ -51,6 +51,11 @@ export const registerTasks = async (client: Client) => {
 			continue;
 		}
 
+		if (task.disabled) {
+			logger.warn(`Task file "${task.name}" is disabled! Skipping...`);
+			continue;
+		}
+
 		client.tasks.set(task.name, task);
 	}
 

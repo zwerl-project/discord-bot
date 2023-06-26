@@ -20,4 +20,5 @@ COPY . .
 RUN yarn build
 
 # Start app
+ENV NODE_ENV=production
 CMD [ "yarn", "deploy" ]

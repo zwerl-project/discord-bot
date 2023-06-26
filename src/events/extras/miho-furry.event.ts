@@ -6,6 +6,7 @@ const MihoFurryEvent: Event = {
 	name: 'miho-furry',
 	on: Events.GuildMemberUpdate,
 	once: false,
+	disabled: true,
 	async execute(_: GuildMember, member: GuildMember) {
 		const ludaGuild = await GuildService.getGuildInfo('luda-cafe');
 

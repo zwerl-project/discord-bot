@@ -3,7 +3,6 @@ import { requiresModerator, errorWrapper } from '@middlewares';
 import { GuildService, UserService } from '@services';
 import { Command } from '@interfaces';
 
-
 const enableWhitelistSubCommand = new SlashCommandSubcommandBuilder()
 	.setName('enable')
 	.setDescription('Enables whitelist.');
@@ -15,9 +14,9 @@ const disableWhitelistSubCommand = new SlashCommandSubcommandBuilder()
 const whilistUserSubCommand = new SlashCommandSubcommandBuilder()
 	.setName('user')
 	.setDescription('Whitelists a user.')
-	.addUserOption(option => 
-		option.setName('user')
-			.setDescription('The target user to get the activities from.')
+	.addStringOption(option => 
+		option.setName('user-id')
+			.setDescription('The id of the target user.')
 			.setRequired(true)
 	)
 	.addBooleanOption(option =>
@@ -26,10 +25,16 @@ const whilistUserSubCommand = new SlashCommandSubcommandBuilder()
 			.setRequired(false)
 	);
 
+const whitelistRegisterUsersSubCommand = new SlashCommandSubcommandBuilder()
+	.setName('register-users')
+	.setDescription('Registers all users to the database.');
+
+
 interface WhitelistCommand extends Command {
 	enableWhitelist: (interaction: ChatInputCommandInteraction) => Promise<void>;
 	disableWhitelist: (interaction: ChatInputCommandInteraction) => Promise<void>;
 	whitelistUser: (interaction: ChatInputCommandInteraction) => Promise<void>;
+	registerUsers: (interaction: ChatInputCommandInteraction) => Promise<void>;
 }
 
 const whitelistedCommand: WhitelistCommand = {
@@ -57,6 +62,8 @@ const whitelistedCommand: WhitelistCommand = {
 		case 'user':
 			await this.whitelistUser(interaction);
 			break;
+		case 'register-users':
+			await this.registerUsers(interaction);
 		default:
 			throw new Error('Invalid subcommand.');
 		}
@@ -88,15 +95,35 @@ const whitelistedCommand: WhitelistCommand = {
 		const { guild } = interaction;
 		if (!guild) throw new Error('Couldn\'t find guild.');
 
-		const user = interaction.options.getUser('user', true);
+		const userId = interaction.options.getString('user-id', true);
+		const user = interaction.client.users.resolveId(userId);
+		if (!user) throw new Error('Couldn\'t find user.');
+
 		const remove = interaction.options.getBoolean('remove', false) ?? false;
 		
-		await UserService.whitelistUser(user.id, guild.id, remove);
+		await UserService.whitelistUser(userId, guild.id, remove);
 
 		await interaction.editReply({
-			content: `User updated! <@${user.id}> is now ${!remove ? 'whitelisted' : 'blacklisted'}.`
+			content: `User updated! <@${userId}> is now ${!remove ? 'whitelisted' : 'blacklisted'}.`
 		});
+	},
+
+	async registerUsers(interaction: ChatInputCommandInteraction) {
+		const { guild } = interaction;
+		if (!guild) throw new Error('Couldn\'t find guild.');
+
+		if (!await GuildService.isWhitelistOnly(guild.id)) {
+			await interaction.editReply('Whitelist is not enabled! Please enable it first.');
+			return;
+		}
+
+		guild.members.cache.each(async user => {
+			await UserService.whitelistUser(user.id, guild.id);
+		});
+
+		await interaction.editReply('Memebers have been updated!');
 	}
+
 };
 
 export default whitelistedCommand;

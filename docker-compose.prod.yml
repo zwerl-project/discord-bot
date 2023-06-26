@@ -14,6 +14,3 @@ services:
       - CLIENT_ID=${CLIENT_ID}
     networks:
       - zwerl-net
-networks:
-  zwerl-net:
-    external: true

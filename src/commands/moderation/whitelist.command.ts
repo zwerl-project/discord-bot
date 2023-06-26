@@ -25,7 +25,7 @@ const whilistUserSubCommand = new SlashCommandSubcommandBuilder()
 			.setRequired(false)
 	);
 
-const whitelistRegisterUsersSubCommand = new SlashCommandSubcommandBuilder()
+const registerUsersSubCommand = new SlashCommandSubcommandBuilder()
 	.setName('register-users')
 	.setDescription('Registers all users to the database.');
 
@@ -44,6 +44,7 @@ const whitelistedCommand: WhitelistCommand = {
 		.addSubcommand(enableWhitelistSubCommand)
 		.addSubcommand(disableWhitelistSubCommand)
 		.addSubcommand(whilistUserSubCommand)
+		.addSubcommand(registerUsersSubCommand)
 		.setDMPermission(false),
 
 	middlewares: [errorWrapper, requiresModerator],

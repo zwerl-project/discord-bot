@@ -88,7 +88,7 @@ const yiffCommand: YiffCommand = {
 
 		const files = posts.map(post => ({
 			attachment: post[1],
-			name: `post-${post[0]}.webm`
+			name: `post-${post[0]}`
 		}));
 
 		const postsEmbeds = await EmbedService.createE621SearchEmbed(tags)

@@ -139,3 +139,12 @@ export const createBuilderApplicationComponents = async () => {
 				.setStyle(ButtonStyle.Danger)
 		);
 };
+
+export const createE621SearchEmbed = async (tags: string) => {
+	return new EmbedBuilder()
+		.setTitle('E621 Search')
+		.setColor(0x0099FF)
+		.addFields([
+			{ name: 'Searched Tags', value: tags },
+		]).setURL(`https://e621.net/posts?tags=${tags}`);
+}

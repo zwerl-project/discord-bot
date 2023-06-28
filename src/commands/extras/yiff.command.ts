@@ -44,25 +44,14 @@ const yiffCommand: YiffCommand = {
 
 		const subCommand = interaction.options.getSubcommand();
 
-		if (subCommand === 'post') await this.getPost(interaction);
-		else if (subCommand === 'search') await this.searchPost(interaction);
-
-		const tags = interaction.options.getString('tags', false);
-
-		let postData;
-
-		if (!tags) postData = await YiffService.getRandomPost();
-		else postData = await YiffService.searchPosts(tags);
-
-		if (!postData) {
-			await interaction.editReply({ content: 'Couldn\'t find any posts with the given tags.' });
-			return;
+		switch (subCommand) {
+		case 'post':
+			await this.getPost(interaction);
+			break;
+		case 'search':
+			await this.searchPost(interaction);
+			break;
 		}
-
-		const [postId, postUrl] = postData;
-
-		const postEmbed = await EmbedService.createImageEmbed(postUrl, 'Random E621 Post', `https://e621.net/posts/${postId}`);
-		await interaction.editReply({ embeds: [postEmbed] });
 	},
 
 	async getPost(interaction: ChatInputCommandInteraction) {
@@ -90,17 +79,15 @@ const yiffCommand: YiffCommand = {
 			return;
 		}
 
-		const postData = await YiffService.searchPosts(tags);
+		const posts = await YiffService.searchPosts(tags);
 
-		if (!postData) {
+		if (!posts) {
 			await interaction.editReply({ content: 'Couldn\'t find any posts with the given tags.' });
 			return;
 		}
 
-		const [postId, postUrl] = postData;
-
-		const postEmbed = await EmbedService.createImageEmbed(postUrl, 'Random E621 Post', `https://e621.net/posts/${postId}`);
-		await interaction.editReply({ embeds: [postEmbed] });
+		const postsEmbeds = await EmbedService.createE621SearchEmbed(tags)
+		await interaction.editReply({ embeds: [postsEmbeds], files: posts.map(post => post[1])});
 	}
 };
 

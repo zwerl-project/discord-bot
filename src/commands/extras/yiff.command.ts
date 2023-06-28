@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandSubcommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, RawFile, SlashCommandBuilder, SlashCommandSubcommandBuilder } from 'discord.js';
 import { errorWrapper, onlyNSFW } from '@middlewares';
 import { YiffService, EmbedService } from '@services';
 import { Command } from '@interfaces';
@@ -86,8 +86,13 @@ const yiffCommand: YiffCommand = {
 			return;
 		}
 
+		const files = posts.map(post => ({
+			attachment: post[1],
+			name: `post-${post[0]}.webm`
+		}));
+
 		const postsEmbeds = await EmbedService.createE621SearchEmbed(tags)
-		await interaction.editReply({ embeds: [postsEmbeds], files: posts.map(post => post[1])});
+		await interaction.editReply({ embeds: [postsEmbeds], files });
 	}
 };
 

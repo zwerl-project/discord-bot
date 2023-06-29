@@ -145,6 +145,7 @@ export const createE621SearchEmbed = async (tags: string) => {
 		.setTitle('E621 Search')
 		.setColor(0x0099FF)
 		.addFields([
-			{ name: 'Searched Tags', value: tags },
-		]).setURL(`https://e621.net/posts?tags=${tags}`);
+			{ value: 'Here are some posts found according to your search!', name: 'Information'},
+			{ name: 'Searched Tags', value: tags, inline: true }
+		]);
 }

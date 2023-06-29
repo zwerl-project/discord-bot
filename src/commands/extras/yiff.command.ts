@@ -2,6 +2,7 @@ import { ChatInputCommandInteraction, RawFile, SlashCommandBuilder, SlashCommand
 import { errorWrapper, onlyNSFW } from '@middlewares';
 import { YiffService, EmbedService } from '@services';
 import { Command } from '@interfaces';
+import logger from '@utils/logger';
 
 const postSubCommand = new SlashCommandSubcommandBuilder()
 	.setName('post')
@@ -20,6 +21,18 @@ const searchSubCommand = new SlashCommandSubcommandBuilder()
 		options
 			.setName('tags')
 			.setDescription('Tags to search for.')
+			.setRequired(true)
+	)
+	.addIntegerOption(options =>
+		options
+			.setName('limit')
+			.setDescription('The amount of posts to search for.')
+			.setRequired(false)
+	)
+	.addIntegerOption(options =>
+		options
+			.setName('page')
+			.setDescription('The page to search for.')
 			.setRequired(false)
 	);
 
@@ -58,28 +71,29 @@ const yiffCommand: YiffCommand = {
 		const id = interaction.options.getString('id', true);
 
 		// Get random post and send it
-		const postData = await YiffService.getPost(id);
+		const post = await YiffService.getPost(id);
 
-		if (!postData) {
+		if (!post) {
 			await interaction.editReply({ content: 'Couldn\'t find any posts with the given tags.' });
 			return;
 		}
 
-		const [postId, postUrl] = postData;
 
-		const postEmbed = await EmbedService.createImageEmbed(postUrl, `E621 Post #${id}`, `https://e621.net/posts/${postId}`);
-		await interaction.editReply({ embeds: [postEmbed] });
+		const embed = await EmbedService.createImageEmbed(post.url, `E621 Post #${id}`, `https://e621.net/posts/${post.id}`);
+		await interaction.editReply({ embeds: [embed] });
 	},
 
 	async searchPost(interaction: ChatInputCommandInteraction) {
-		const tags = interaction.options.getString('tags', false);
+		const tags = interaction.options.getString('tags', true);
+		const limit = interaction.options.getInteger('limit', false) ?? 5;
+		const page = interaction.options.getInteger('page', false) ?? 1;
 
 		if (!tags) {
 			await interaction.editReply({ content: 'Please provide tags to search for.' });
 			return;
 		}
 
-		const posts = await YiffService.searchPosts(tags);
+		const posts = await YiffService.searchPosts(tags, limit, page);
 
 		if (!posts) {
 			await interaction.editReply({ content: 'Couldn\'t find any posts with the given tags.' });
@@ -87,12 +101,15 @@ const yiffCommand: YiffCommand = {
 		}
 
 		const files = posts.map(post => ({
-			attachment: post[1],
-			name: `post-${post[0]}`
+			attachment: post.url,
+			name: `post-${post.id}.${post.ext}`
 		}));
 
+		logger.info(`Found ${posts.length} posts with tags ${tags}.`);
+		logger.info(files)
+
 		const postsEmbeds = await EmbedService.createE621SearchEmbed(tags)
-		await interaction.editReply({ embeds: [postsEmbeds], files });
+		await interaction.editReply({ files, embeds: [postsEmbeds] });
 	}
 };
 

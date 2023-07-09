@@ -7,6 +7,14 @@ interface Post {
 	ext: string;
 }
 
+interface E621PostResponse {
+	id: string;
+	file: {
+		url: string;
+		ext: string;
+	}
+}
+
 const client = axios.create({
 	baseURL: 'https://e621.net',
 	httpsAgent: new https.Agent({ keepAlive: true }),
@@ -27,16 +35,16 @@ export const getRandomPost = async (): Promise<Post> => {
 	};
 };
 
-export const searchPosts = async (tags: string, limit: number = 10, page: number = 1): Promise<Post[] | null> => {
+export const searchPosts = async (tags: string, limit = 10, page = 1): Promise<Post[] | null> => {
 	const { data } = await client.get(
-		`/posts.json`, 
+		'/posts.json', 
 		{ params: { tags, limit, page } }
 	);
 
 	if (data.posts.length === 0) return null;
 	
 	// Array of posts with [id, url] format
-	const posts = data.posts.map((post: any) => ({
+	const posts = data.posts.map((post: E621PostResponse) => ({
 		id: post.id,
 		url: post.file.url,
 		ext: post.file.ext

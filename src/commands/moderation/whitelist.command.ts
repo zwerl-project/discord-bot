@@ -65,6 +65,7 @@ const whitelistedCommand: WhitelistCommand = {
 			break;
 		case 'register-users':
 			await this.registerUsers(interaction);
+			break;
 		default:
 			throw new Error('Invalid subcommand.');
 		}

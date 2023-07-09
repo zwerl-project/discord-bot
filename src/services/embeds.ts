@@ -148,4 +148,4 @@ export const createE621SearchEmbed = async (tags: string) => {
 			{ value: 'Here are some posts found according to your search!', name: 'Information'},
 			{ name: 'Searched Tags', value: tags, inline: true }
 		]);
-}
+};

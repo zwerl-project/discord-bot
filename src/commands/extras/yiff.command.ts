@@ -1,4 +1,4 @@
-import { ChatInputCommandInteraction, RawFile, SlashCommandBuilder, SlashCommandSubcommandBuilder } from 'discord.js';
+import { ChatInputCommandInteraction, SlashCommandBuilder, SlashCommandSubcommandBuilder } from 'discord.js';
 import { errorWrapper, onlyNSFW } from '@middlewares';
 import { YiffService, EmbedService } from '@services';
 import { Command } from '@interfaces';
@@ -106,9 +106,9 @@ const yiffCommand: YiffCommand = {
 		}));
 
 		logger.info(`Found ${posts.length} posts with tags ${tags}.`);
-		logger.info(files)
+		logger.info(files);
 
-		const postsEmbeds = await EmbedService.createE621SearchEmbed(tags)
+		const postsEmbeds = await EmbedService.createE621SearchEmbed(tags);
 		await interaction.editReply({ files, embeds: [postsEmbeds] });
 	}
 };

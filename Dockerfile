@@ -1,5 +1,9 @@
 FROM node:18-bullseye-slim
 
+# Set environment variables
+ARG COMMIT_SHA
+ENV COMMIT_SHA=${COMMIT_SHA}
+
 # Create app directory
 WORKDIR /usr/src/app
 

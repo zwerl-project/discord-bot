@@ -5,13 +5,15 @@ export interface EnvironmentSettings {
 	production: boolean;
 	clientId: string;
 	token: string;
+	build: string;
 }
 
 const settings: EnvironmentSettings = {
 	port: getNumber('PORT'),
 	production: getString('NODE_ENV') === 'production',
 	clientId: getString('CLIENT_ID'),
-	token: getString('TOKEN')
+	token: getString('TOKEN'),
+	build: getString('COMMIT_SHA'),
 };
 
 export default settings;

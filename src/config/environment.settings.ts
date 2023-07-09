@@ -13,7 +13,7 @@ const settings: EnvironmentSettings = {
 	production: getString('NODE_ENV') === 'production',
 	clientId: getString('CLIENT_ID'),
 	token: getString('TOKEN'),
-	build: getString('COMMIT_SHA'),
+	build: getString('COMMIT_SHA', 'unknown'),
 };
 
 export default settings;

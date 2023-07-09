@@ -25,7 +25,7 @@ const client = new Client({
 const rest = new REST({ version: '10' }).setToken(token);
 
 const main = async () => {
-	logger.info(`Initializing bot [build: ${build ?? 'unknown'}]...`);
+	logger.info(`Initializing bot [build: ${build}]...`);
 	if (!production) logger.warn('Running in development mode!');
 
 	// commands

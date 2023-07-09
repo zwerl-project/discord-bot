@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   discord:
-    build: .
+    image: ghcr.io/zwerl-project/discord-bot:main 
     container_name: zwerl-discord
     restart: always
     ports:
@@ -11,6 +11,8 @@ services:
       - PORT=${PORT}
       - TOKEN=${TOKEN}
       - CLIENT_ID=${CLIENT_ID}
+    depends_on:
+      - postgres
   postgres:
     image: postgres:12.2
     restart: always

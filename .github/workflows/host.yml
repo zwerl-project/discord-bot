@@ -1,5 +1,0 @@
-name: 'Run on host'
-description: 'Running the Docker image on the host'
-runs:
-  using: 'docker'
-  image: 'Dockerfile'

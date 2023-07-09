@@ -7,7 +7,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  GITHUB_SHA_SHORT: ${{ github.sha }}
+  GITHUB_SHA_SHORT: $(git rev-parse --short "$GITHUB_SHA")
 
 jobs:
   build-and-push-image:
